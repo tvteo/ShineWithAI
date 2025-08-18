@@ -41,7 +41,7 @@ const Navbar: React.FC<NavbarProps> = ({ onToggle }) => {
           ℹ️ {isOpen && "About"}
         </a>
         <a
-          href="#"
+          href="/contact"
           className="px-3 py-2 rounded-md hover:bg-blue-600 transition"
         >
           📞 {isOpen && "Contact"}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Navbar from "./components/Navbar";
 import Topbar from "./components/Topbar";
+import AppRoutes from "./routes/AppRoutes";
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -21,10 +22,7 @@ function App() {
 
         {/* Main content (chiều cao 100%) */}
         <main className="flex-1 p-6 bg-gray-100">
-          <h1 className="text-2xl font-bold">Xin chào 👋</h1>
-          <p className="mt-2 text-gray-700">
-            Nội dung này chiếm toàn bộ phần còn lại của màn hình (100% chiều cao).
-          </p>
+           <AppRoutes />
         </main>
       </div>
     </div>
