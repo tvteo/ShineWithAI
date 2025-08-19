@@ -29,22 +29,22 @@ const Navbar: React.FC<NavbarProps> = ({ onToggle }) => {
       {/* Nav links */}
       <nav className="flex flex-col p-3 space-y-2">
         <a
-          href="#"
+          href="/"
           className="px-3 py-2 rounded-md hover:bg-blue-600 transition"
         >
-          🏠 {isOpen && "Home"}
+          🏠 {isOpen && "Trang chủ"}
         </a>
         <a
           href="#"
           className="px-3 py-2 rounded-md hover:bg-blue-600 transition"
         >
-          ℹ️ {isOpen && "About"}
+          ℹ️ {isOpen && "Thông tin"}
         </a>
         <a
           href="/contact"
           className="px-3 py-2 rounded-md hover:bg-blue-600 transition"
         >
-          📞 {isOpen && "Contact"}
+          📞 {isOpen && "Liên hệ"}
         </a>
       </nav>
     </div>
