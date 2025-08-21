@@ -1,3 +1,4 @@
+import { Menu } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -22,8 +23,13 @@ const Navbar: React.FC<NavbarProps> = ({ onToggle }) => {
       {/* Header */}
       <div className="flex items-center justify-between bg-blue-700 px-4 py-3">
         <span className="font-bold text-lg">{isOpen ? "Shine With AI" : ""}</span>
-        <button onClick={toggleSidebar} className="text-xl">
-          {isOpen ? "←" : "→"}
+        <button
+          onClick={toggleSidebar}
+          className="cursor-pointer p-2 border border-white rounded-md 
+                    hover:bg-white hover:text-blue-700 transition 
+                    focus:outline-none focus:ring-2 focus:ring-white"
+        >
+          <Menu size={20} />
         </button>
       </div>
 
