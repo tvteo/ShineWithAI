@@ -2,9 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-import AppRoutes from "./routes/AppRoutes";
 import { AuthProvider } from "./context/AuthContext";
 import "./index.css"; // Tailwind
+import App from "./App";
 
 // 👉 Khởi tạo Apollo Client
 const client = new ApolloClient({
@@ -17,7 +17,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <ApolloProvider client={client}>
       <BrowserRouter>
         <AuthProvider>
-          <AppRoutes />
+          <App />
         </AuthProvider>
       </BrowserRouter>
     </ApolloProvider>

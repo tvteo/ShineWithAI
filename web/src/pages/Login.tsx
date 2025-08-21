@@ -1,6 +1,6 @@
 // src/pages/Login.tsx
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -17,6 +17,18 @@ export default function Login() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/"); // sau khi login thành công quay về Home
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setError("");
+    const provider = new GoogleAuthProvider();
+
+    try {
+      await signInWithPopup(auth, provider);
+      navigate("/");
     } catch (err: any) {
       setError(err.message);
     }
@@ -67,6 +79,21 @@ export default function Login() {
             Đăng nhập
           </button>
         </form>
+
+        {/* Google Login */}
+        <div className="mt-6">
+          <button
+            onClick={handleGoogleLogin}
+            className="w-full py-2 border flex items-center justify-center gap-2 rounded-lg hover:bg-gray-50 transition duration-200"
+          >
+            <img
+              src="https://www.svgrepo.com/show/475656/google-color.svg"
+              alt="Google"
+              className="w-5 h-5"
+            />
+            <span className="font-medium text-gray-700">Đăng nhập với Google</span>
+          </button>
+        </div>
 
         <p className="text-center text-sm text-gray-600 mt-6">
           Chưa có tài khoản?{" "}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 interface NavbarProps {
   onToggle: (isOpen: boolean) => void;
@@ -28,24 +29,24 @@ const Navbar: React.FC<NavbarProps> = ({ onToggle }) => {
 
       {/* Nav links */}
       <nav className="flex flex-col p-3 space-y-2">
-        <a
-          href="/"
+        <Link
+          to="/"
           className="px-3 py-2 rounded-md hover:bg-blue-600 transition"
         >
           🏠 {isOpen && "Trang chủ"}
-        </a>
-        <a
-          href="#"
+        </Link>
+        <Link
+          to="/about"
           className="px-3 py-2 rounded-md hover:bg-blue-600 transition"
         >
           ℹ️ {isOpen && "Thông tin"}
-        </a>
-        <a
-          href="/contact"
+        </Link>
+        <Link
+          to="/contact"
           className="px-3 py-2 rounded-md hover:bg-blue-600 transition"
         >
           📞 {isOpen && "Liên hệ"}
-        </a>
+        </Link>
       </nav>
     </div>
   );
