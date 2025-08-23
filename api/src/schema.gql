@@ -3,17 +3,28 @@
 # ------------------------------------------------------
 
 type User {
-  uid: ID!
+  id: ID!
   email: String!
   name: String!
   photoURL: String
+  birthday: String
+  phone: String
+  address: String
 }
 
 type Query {
-  user(uid: String!): User
   users: [User!]!
 }
 
 type Mutation {
-  createUser(uid: String!, email: String!, name: String!, photoURL: String): User!
+  createUser(id: String!, email: String!, name: String!, photoURL: String): User!
+  updateUser(input: UpdateUserInput!): User!
+}
+
+input UpdateUserInput {
+  id: String!
+  name: String
+  birthday: String
+  phone: String
+  address: String
 }

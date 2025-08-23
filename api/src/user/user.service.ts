@@ -1,33 +1,33 @@
 import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
 import { User } from './user.model';
+import { UpdateUserInput } from './dto/update-user.input';
+import { firestore } from "../firebase/firebase.provider";
 
 @Injectable()
 export class UserService {
-  private firestore: FirebaseFirestore.Firestore;
-
   constructor() {
-    if (!admin.apps.length) {
-      admin.initializeApp({
-        credential: admin.credential.applicationDefault(),
-      });
-    }
-    this.firestore = admin.firestore();
+
   }
 
   async createUser(data: User): Promise<User> {
-    await this.firestore.collection('users').doc(data.uid).set(data);
+    await firestore.collection('users').doc(data.id).set(data);
     return data;
   }
 
-  async findByUid(uid: string): Promise<User | null> {
-    const doc = await this.firestore.collection('users').doc(uid).get();
-    if (!doc.exists) return null;
-    return doc.data() as User;
-  }
 
   async findAll(): Promise<User[]> {
-    const snapshot = await this.firestore.collection('users').get();
+    const snapshot = await firestore.collection('users').get();
     return snapshot.docs.map(doc => doc.data() as User);
+  }
+  async updateUser(input: UpdateUserInput): Promise<User> {
+    const { id, ...rest } = input;
+    const userRef = firestore.collection('users').doc(id);
+
+    // Cập nhật Firestore
+    await userRef.set(rest, { merge: true });
+
+    const snapshot = await userRef.get();
+    return { id: snapshot.id, ...snapshot.data() } as User;
   }
 }

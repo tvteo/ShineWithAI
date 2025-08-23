@@ -1,18 +1,12 @@
-import { Field, ObjectType, ID } from '@nestjs/graphql';
+import { InputType, Field } from '@nestjs/graphql';
 
-@ObjectType()
-export class User {
-  @Field(() => ID)
-  id: string;
-
+@InputType()
+export class UpdateUserInput {
   @Field()
-  email: string;
-
-  @Field()
-  name: string;
+  id: string; // id của user trong Firestore (ví dụ uid Firebase)
 
   @Field({ nullable: true })
-  photoURL?: string;
+  name?: string;
 
   @Field({ nullable: true })
   birthday?: string;

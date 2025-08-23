@@ -6,6 +6,7 @@ import SignUp from "../pages/SignUp";
 import FullLayout from "../layouts/FullLayout";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
+import Profile from "../pages/Profile";
 
 const AppRoutes = () => {
   return (
@@ -21,6 +22,7 @@ const AppRoutes = () => {
         <Route element={<FullLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Route>
     </Routes>
