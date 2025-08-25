@@ -1,7 +1,21 @@
-import { useState } from "react";
-import { useMutation, gql } from "@apollo/client";
+import { useState, useEffect } from "react";
+import { useMutation, useQuery, gql } from "@apollo/client";
 import { auth } from "../firebase";
 import { toast } from "react-toastify";
+
+const GET_CURRENT_USER = gql`
+  query CurrentUser {
+    currentUser {
+      id
+      name
+      birthday
+      phone
+      address
+      email
+      photoURL
+    }
+  }
+`;
 
 const UPDATE_USER = gql`
   mutation UpdateUser($input: UpdateUserInput!) {
@@ -21,6 +35,25 @@ export default function Profile() {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
 
+  const { data, loading: loadingUser, error: userError } = useQuery(
+    GET_CURRENT_USER,
+    {
+      // skip nếu chưa có user trên client (auth.currentUser); auth-link nên lấy token tự động
+      skip: !auth.currentUser,
+      fetchPolicy: "network-only",
+    }
+  );
+
+  useEffect(() => {
+    if (data?.currentUser) {
+      const u = data.currentUser;
+      setName(u.name ?? "");
+      setBirthday(u.birthday ?? "");
+      setPhone(u.phone ?? "");
+      setAddress(u.address ?? "");
+    }
+  }, [data]);
+
   const [updateUser, { loading, error }] = useMutation(UPDATE_USER);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -36,7 +69,6 @@ export default function Profile() {
       await updateUser({
         variables: {
           input: {
-            id: user.uid, // ✅ UID Firebase
             name,
             birthday,
             phone,
@@ -46,10 +78,19 @@ export default function Profile() {
       });
 
       toast.success("Cập nhật thông tin thành công 🎉");
-    } catch (err) {
-      toast.error("Có lỗi xảy ra: " + err);
+    } catch (err: any) {
+      toast.error("Có lỗi xảy ra: " + (err.message ?? String(err)));
     }
   };
+
+  // hiển thị loading nếu cần
+  if (loadingUser) {
+    return <div className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg">Đang tải...</div>;
+  }
+
+  if (userError) {
+    console.error(userError);
+  }
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg">
@@ -96,7 +137,7 @@ export default function Profile() {
           />
         </div>
 
-        {error && <p className="text-red-500 text-sm">{error.message}</p>}
+        {error && <p className="text-red-500 text-sm">{(error as any).message}</p>}
 
         <button
           type="submit"

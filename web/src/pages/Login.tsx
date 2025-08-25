@@ -4,7 +4,23 @@ import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 
 import { auth } from "../firebase";
 import { useNavigate, Link } from "react-router-dom";
 
+import { gql, useMutation, useApolloClient } from "@apollo/client";
+
+const CREATE_USER = gql`
+  mutation CreateUser($id: ID!, $email: String!, $name: String, $photoURL: String) {
+    createUser(id: $id, email: $email, name: $name, photoURL: $photoURL) {
+      id
+      email
+      name
+      photoURL
+    }
+  }
+`;
+
+
 export default function Login() {
+  const client = useApolloClient();
+  const [createUser] = useMutation(CREATE_USER);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -17,22 +33,50 @@ export default function Login() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/"); // sau khi login thành công quay về Home
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Đã xảy ra lỗi không xác định.");
+      }
     }
   };
 
-  const handleGoogleLogin = async () => {
+ const handleGoogleLogin = async () => {
     setError("");
     const provider = new GoogleAuthProvider();
 
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      const firebaseUser = result.user;
+
+      // 1) gọi mutation để tạo hoặc cập nhật user record trên server
+      await createUser({
+        variables: {
+          id: firebaseUser.uid,
+          email: firebaseUser.email || "",
+          name: firebaseUser.displayName || "",
+          photoURL: firebaseUser.photoURL || "",
+        },
+      });
+
+      // 2) lấy Firebase ID token và lưu để auth link sử dụng
+      const idToken = await firebaseUser.getIdToken();
+      localStorage.setItem("idToken", idToken);
+
+      // nếu bạn cấu hình Apollo authLink đọc token từ localStorage, reset store để cập nhật cache/headers
+      await client.resetStore();
+
       navigate("/");
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Đã xảy ra lỗi không xác định.");
+      }
     }
   };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-200">
