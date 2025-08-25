@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
+import { UseGuards, UnauthorizedException } from '@nestjs/common';
 import { FirebaseAuthGuard } from '../firebase/firebase-auth.guard';
 import { User } from './user.model';
 import { UserService } from './user.service';
@@ -23,10 +24,19 @@ export class UserResolver {
   // -> Thêm query trả về user hiện tại (bảo vệ bằng FirebaseAuthGuard)
   @Query(() => User)
   @UseGuards(FirebaseAuthGuard)
-  async currentUser(
-    @Context('req') req: { user: { uid: string } },
-  ): Promise<User> {
-    const userId = req.user.uid;
+  async currentUser(@Context() ctx: any): Promise<User> {
+    // Hỗ trợ nhiều dạng context: ctx.req.user (thường), hoặc ctx.user (guard có thể gán trực tiếp)
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    const req = (ctx.req ?? ctx.request) as Record<string, any> | undefined;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
+    const user = req?.user ?? ctx.user;
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    if (!user || !user.uid) {
+      throw new UnauthorizedException(req);
+    }
+
+    const userId = user.uid as string;
     return this.userService.findOne(userId);
   }
 

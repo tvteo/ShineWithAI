@@ -7,8 +7,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { gql, useMutation, useApolloClient } from "@apollo/client";
 
 const CREATE_USER = gql`
-  mutation CreateUser($id: ID!, $email: String!, $name: String, $photoURL: String) {
-    createUser(id: $id, email: $email, name: $name, photoURL: $photoURL) {
+  mutation CreateUser($input: CreateUserInput!) {
+    createUser(input: $input) {
       id
       email
       name
@@ -53,10 +53,12 @@ export default function Login() {
       // 1) gọi mutation để tạo hoặc cập nhật user record trên server
       await createUser({
         variables: {
-          id: firebaseUser.uid,
-          email: firebaseUser.email || "",
-          name: firebaseUser.displayName || "",
-          photoURL: firebaseUser.photoURL || "",
+          input: {
+            id: firebaseUser.uid,
+            email: firebaseUser.email || "",
+            name: firebaseUser.displayName || "",
+            photoURL: firebaseUser.photoURL || "",
+          }
         },
       });
 
@@ -79,7 +81,7 @@ export default function Login() {
 
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-200">
+    <div className="flex items-center justify-center min-h-screen  px-4 bg-gradient-to-br from-blue-100 to-purple-200">
       <div className="bg-white shadow-2xl rounded-2xl w-full max-w-md p-8">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
           Đăng nhập

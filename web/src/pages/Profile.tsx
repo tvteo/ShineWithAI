@@ -78,6 +78,7 @@ export default function Profile() {
       });
 
       toast.success("Cập nhật thông tin thành công 🎉");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       toast.error("Có lỗi xảy ra: " + (err.message ?? String(err)));
     }
@@ -137,7 +138,7 @@ export default function Profile() {
           />
         </div>
 
-        {error && <p className="text-red-500 text-sm">{(error as any).message}</p>}
+        {error && <p className="text-red-500 text-sm">{(error as Error).message}</p>}
 
         <button
           type="submit"

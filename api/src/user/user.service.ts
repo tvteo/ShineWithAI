@@ -16,6 +16,7 @@ export class UserService {
    * Tạo user mới khi login lần đầu bằng Gmail
    */
   async createUser(data: Partial<User>): Promise<User> {
+    console.log('Creating user with data:', data);
     const userRef = this.db.collection('users').doc(data.id || '');
     const snapshot = await userRef.get();
 
@@ -24,10 +25,7 @@ export class UserService {
         id: data.id!,
         email: data.email!,
         name: data.name!,
-        photoURL: data.photoURL ?? undefined,
-        birthday: undefined,
-        phone: undefined,
-        address: undefined,
+        photoURL: data.photoURL ?? '',
         createdAt: new Date(),
         updatedAt: new Date(),
       };

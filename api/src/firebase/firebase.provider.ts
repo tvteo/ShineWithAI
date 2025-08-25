@@ -1,21 +1,13 @@
 // src/firebase/firebase.provider.ts
 import * as admin from 'firebase-admin';
-import { Provider } from '@nestjs/common';
-import serviceAccount from './shine-with-ai-firebase-adminsdk-fbsvc-5737c0e087.json';
+import { ServiceAccount } from 'firebase-admin';
 
-export const FirebaseAdmin = admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
-});
+import * as serviceAccount from './shine-with-ai-firebase-adminsdk-fbsvc-2a1d1d7977.json';
 
-export const firestore = admin.firestore(); // 👈 export firestore instance
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount as ServiceAccount),
+  });
+}
 
-export const FirebaseProviders: Provider[] = [
-  {
-    provide: 'FIREBASE_ADMIN',
-    useValue: FirebaseAdmin,
-  },
-  {
-    provide: 'FIRESTORE',
-    useValue: firestore,
-  },
-];
+export const firestore = admin.firestore();

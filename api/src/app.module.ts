@@ -4,7 +4,6 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
-import { FirebaseModule } from './firebase/firebase.module';
 
 @Module({
   imports: [
@@ -16,7 +15,6 @@ import { FirebaseModule } from './firebase/firebase.module';
       context: ({ req }) => ({ req }), // quan trọng: đưa req vào context
       playground: true,
     }),
-    FirebaseModule,
     UserModule,
   ],
 })
