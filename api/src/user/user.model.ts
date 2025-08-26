@@ -22,4 +22,10 @@ export class User {
 
   @Field({ nullable: true })
   address?: string;
+
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Field(() => Date)
+  updatedAt: Date;
 }

@@ -32,6 +32,7 @@ function Contact() {
       console.log("EmailJS result:", result);
       setStatus({ success: true, message: "✅ Gửi email thành công!" });
       setFormData({ name: "", email: "", message: "" });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error("EmailJS error:", err);
       setStatus({ success: false, message: "❌ Gửi email thất bại!" });
