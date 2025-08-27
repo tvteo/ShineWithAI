@@ -2,7 +2,7 @@
 import * as admin from 'firebase-admin';
 import { ServiceAccount } from 'firebase-admin';
 
-import * as serviceAccount from './shine-with-ai-firebase-adminsdk-fbsvc-2a1d1d7977.json';
+import * as serviceAccount from './shine-with-ai-9714d18d4ae3.json';
 
 if (!admin.apps.length) {
   admin.initializeApp({
