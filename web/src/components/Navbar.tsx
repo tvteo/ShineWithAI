@@ -64,11 +64,11 @@ const Navbar: React.FC<NavbarProps> = ({ onToggle }) => {
         </button>
         {openLessons && isOpen && (
           <div className="ml-6 space-y-1 text-sm">
-            <Link to="/lessons/language" className="block hover:text-blue-300">Ngôn ngữ</Link>
-            <Link to="/lessons/emotion" className="block hover:text-blue-300">Cảm xúc</Link>
-            <Link to="/lessons/focus" className="block hover:text-blue-300">Tập trung</Link>
-            <Link to="/lessons/math" className="block hover:text-blue-300">Toán</Link>
-            <Link to="/lessons/life-skills" className="block hover:text-blue-300">Kỹ năng sống</Link>
+            <Link to="/lessons/language" className="block hover:text-blue-300">🌐Ngôn ngữ</Link>
+            <Link to="/lessons/emotion" className="block hover:text-blue-300">😊Cảm xúc</Link>
+            <Link to="/lessons/focus" className="block hover:text-blue-300">🧠Tập trung</Link>
+            <Link to="/lessons/math" className="block hover:text-blue-300">🔢Toán</Link>
+            <Link to="/lessons/life-skills" className="block hover:text-blue-300">🌱Kỹ năng sống</Link>
           </div>
         )}
 
